@@ -22,7 +22,7 @@ async function sendMail(to, subject, text, html) {
       service: "gmail",
       auth: {
         type: "OAuth2",
-        user: "b_bouabca@estin.dz",
+        user: "cloudyversedz@gmail.com",
         clientId,
         clientSecret,
         refreshToken,
@@ -31,7 +31,7 @@ async function sendMail(to, subject, text, html) {
     });
 
     const mailOptions = {
-      from: "b_bouabca@estin.dz",
+      from: "cloudyversedz@gmail.com",
       to,
       subject,
       text,

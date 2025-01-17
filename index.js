@@ -60,7 +60,6 @@ async function main() {
       path.join(__dirname, 'emails.txt'), // Path to your email list file
       'Test Subject',
       'This is a test email',
-      '<p>This is a <strong>test</strong> email</p>'
     );
 
     console.log('Email Sending Results:');
