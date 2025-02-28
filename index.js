@@ -3,58 +3,58 @@ const path = require('path');
 const { sendMail } = require('./senMail');
 
 async function processEmailList(filePath, subject, text, html) {
-  try {
-    // Read the file
-    const fileContent = await fs.readFile(filePath, 'utf-8');
+    try {
+        // Read the file
+        const fileContent = await fs.readFile(filePath, 'utf-8');
 
-    // Split the content into lines and process
-    const rawEmails = fileContent.split('\n')
-      .map(email => email.trim()) // Remove whitespace
-      .filter(email => email !== ''); // Remove empty lines
+        // Split the content into lines and process
+        const rawEmails = fileContent.split('\n')
+            .map(email => email.trim()) // Remove whitespace
+            .filter(email => email !== ''); // Remove empty lines
 
-    // Remove duplicates
-    const uniqueEmails = [...new Set(rawEmails)];
+        // Remove duplicates
+        const uniqueEmails = [...new Set(rawEmails)];
 
-    // Validate emails
-    const validEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const validEmails = uniqueEmails.filter(email => validEmailRegex.test(email));
+        // Validate emails
+        const validEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const validEmails = uniqueEmails.filter(email => validEmailRegex.test(email));
 
-    // Invalid emails
-    const invalidEmails = uniqueEmails.filter(email => !validEmailRegex.test(email));
+        // Invalid emails
+        const invalidEmails = uniqueEmails.filter(email => !validEmailRegex.test(email));
 
-    // Arrays to track send results
-    const successEmails = [];
-    const failedEmails = [];
+        // Arrays to track send results
+        const successEmails = [];
+        const failedEmails = [];
 
-    // Send emails
-    for (const email of validEmails) {
-      try {
-        await sendMail(email, subject, text, html);
-        successEmails.push(email);
-        console.log(`Email sent successfully to ${email}`);
-      } catch (error) {
-        failedEmails.push(email);
-        console.error(`Failed to send email to ${email}:`, error.message);
-      }
+        // Send emails
+        for (const email of validEmails) {
+            try {
+                await sendMail(email, subject, text, html);
+                successEmails.push(email);
+                console.log(`Email sent successfully to ${email}`);
+            } catch (error) {
+                failedEmails.push(email);
+                console.error(`Failed to send email to ${email}:`, error.message);
+            }
+        }
+
+        // Return results
+        return {
+            totalEmails: validEmails.length,
+            successEmails,
+            failedEmails,
+            invalidEmails
+        };
+    } catch (error) {
+        console.error('Error processing email list:', error);
+        throw error;
     }
-
-    // Return results
-    return {
-      totalEmails: validEmails.length,
-      successEmails,
-      failedEmails,
-      invalidEmails
-    };
-  } catch (error) {
-    console.error('Error processing email list:', error);
-    throw error;
-  }
 }
 
 // Example usage
 async function main() {
-  try {
-    const htmlTemplate = `<!DOCTYPE html>
+    try {
+        const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -68,13 +68,13 @@ async function main() {
                 <table cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td style="padding: 10px; width: 15%;">
-                            <img src="https://i.postimg.cc/FFSgdbv6/hotyverse.png" alt="hotyverse-logo-image" style="width: 50px; height: auto;">
+                            <img src="https://res.cloudinary.com/dnvhsbkk6/image/upload/v1740762060/logo_v6gzhx.png" alt="hotyverse-logo-image" style="width: 50px; height: auto;">
                         </td>
                         <td style="width: 55%;">
                             <span style="font-size: 20px; font-weight: 800; letter-spacing: 0.35rem;">HotyVerse</span>
                         </td>
                         <td style="width: 30%; text-align: right;">
-                            <img src="https://i.postimg.cc/tJ3TSWJ6/email.png" alt="splash-image" style="width: 150px; height: auto;">
+                            <img src="https://res.cloudinary.com/dnvhsbkk6/image/upload/v1740762807/splash_flozbf.png" alt="splash-image" style="width: 150px; height: auto;">
                         </td>
                     </tr>
                 </table>
@@ -101,7 +101,7 @@ async function main() {
                     </tr>
                     <tr>
                         <td style="padding: 20px;">
-                            <a href="http://104.154.75.47/" style="text-decoration: none; background-color: #C6DDFF;border-radius: 7px; color: black; display: inline-block; font-size: 16px; font-weight: 600; height: 3.5rem; line-height: 3.5rem; text-align: center; width: 70%;">Commencer</a>
+                            <a href="https://hotyverse.com" style="text-decoration: none; background-color: #C6DDFF;border-radius: 7px; color: black; display: inline-block; font-size: 16px; font-weight: 600; height: 3.5rem; line-height: 3.5rem; text-align: center; width: 70%;">Commencer</a>
                         </td>
                     </tr>
                     <tr>
@@ -121,16 +121,16 @@ async function main() {
                     <tr>
                         <td>
                             <a href="#" style="margin: 0 15px;">
-                                <img src="https://i.postimg.cc/Fs5XPHYV/facebookpng.png" alt="Facebook" style="width: 50px; height: 50px;">
+                                <img src="https://res.cloudinary.com/dnvhsbkk6/image/upload/v1740762060/facebook_ebvcqh.png" alt="Facebook" style="width: 50px; height: 50px;">
                             </a>
                             <a href="https://x.com/cloudyversedz" style="margin: 0 15px;">
-                                <img src="https://i.postimg.cc/cLTq47XF/twitter.png" alt="Twitter" style="width: 50px; height: 50px;">
+                                <img src="https://res.cloudinary.com/dnvhsbkk6/image/upload/v1740762060/x_cpi4ci.png" alt="Twitter" style="width: 50px; height: 50px;">
                             </a>
                             <a href="https://www.instagram.com/cloudyverse_dz/" style="margin: 0 15px;">
-                                <img src="https://i.postimg.cc/HswDF15D/instagram.png" alt="Instagram" style="width: 50px; height: 50px;">
+                                <img src="https://res.cloudinary.com/dnvhsbkk6/image/upload/v1740762060/instagram_ihjajf.png" alt="Instagram" style="width: 50px; height: 50px;">
                             </a>
                             <a href="https://www.linkedin.com/in/cloudy-verse-024062347" style="margin: 0 15px;">
-                                <img src="https://i.postimg.cc/9Qc5hgt4/linkedIn.png" alt="LinkedIn" style="width: 50px; height: 50px;">
+                                <img src="https://res.cloudinary.com/dnvhsbkk6/image/upload/v1740762060/linkedIn_wqsixw.png" alt="LinkedIn" style="width: 50px; height: 50px;">
                             </a>
                         </td>
                     </tr>
@@ -141,21 +141,21 @@ async function main() {
 </body>
 </html>`;
 
-    const result = await processEmailList(
-      path.join(__dirname, 'emails.txt'),
-      'Bienvenue A HotyVerse',
-      'Invitation to test our new hotel management SaaS application',
-      htmlTemplate
-    );
+        const result = await processEmailList(
+            path.join(__dirname, 'emails.txt'),
+            'Bienvenue A HotyVerse',
+            'Invitation to test our new hotel management SaaS application',
+            htmlTemplate
+        );
 
-    console.log('Email Sending Results:');
-    console.log('Total Emails:', result.totalEmails);
-    console.log('Successfully Sent:', result.successEmails);
-    console.log('Failed Emails:', result.failedEmails);
-    console.log('Invalid Emails:', result.invalidEmails);
-  } catch (error) {
-    console.error('Script execution failed:', error);
-  }
+        console.log('Email Sending Results:');
+        console.log('Total Emails:', result.totalEmails);
+        console.log('Successfully Sent:', result.successEmails);
+        console.log('Failed Emails:', result.failedEmails);
+        console.log('Invalid Emails:', result.invalidEmails);
+    } catch (error) {
+        console.error('Script execution failed:', error);
+    }
 }
 
 main();
